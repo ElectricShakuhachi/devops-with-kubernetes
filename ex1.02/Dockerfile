@@ -1,7 +1,11 @@
-FROM ubuntu
-
-RUN apt-get update
+FROM python
 
 EXPOSE $PORT 
 
-CMD echo Server started in port ${PORT}
+WORKDIR /usr/src/app
+
+COPY src ./src
+
+RUN cd src; source venv/bin/activate; pip install -r requirements.txt
+
+CMD cd src; flask run -p ${PORT}
