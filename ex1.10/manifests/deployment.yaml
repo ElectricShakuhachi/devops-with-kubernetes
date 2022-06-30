@@ -1,20 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pingpong-dep
+  name: logoutput-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pingpong
+      app: logoutput
   template:
     metadata:
       labels:
-        app: pingpong
+        app: logoutput
     spec:
+      volumes:
+      - name: file-volume
+        emptyDir: {}
       containers:
-        - name: pingpong
-          image: aahaavis/pingpong:latest
+        - name: logger
+          image: aahaavis/logger:latest
+          volumeMounts:
+          - name: file-volume
+            mountPath: usr/src/app/files
+        - name: output
+          image: aahaavis/output:latest
           env:
           - name: PORT
             value: "\x38\x30\x38\x30"
+          volumeMounts:
+          - name: file-volume
+            mountPath: usr/src/app/files
