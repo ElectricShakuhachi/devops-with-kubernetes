@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logoutput-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logoutput
+  template:
+    metadata:
+      labels:
+        app: logoutput
+    spec:
+      containers:
+        - name: logoutput
+          image: aahaavis/log_output:latest
+          env:
+          - name: PORT
+            value: "\x38\x30\x38\x30"
+        - name: pingpong
+          image: aahaavis/pingpong:latest
+          env:
+          - name: PORT
+            value: "\x38\x30\x30\x30"

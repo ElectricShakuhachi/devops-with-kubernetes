@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo
+  template:
+    metadata:
+      labels:
+        app: todo
+    spec:
+      volumes:
+        - name: todosvolume
+          persistentVolumeClaim:
+            claimName: todosvolumeclaim
+      containers:
+        - name: todo
+          image: aahaavis/server:latest
+          volumeMounts:
+            - name: todosvolume
+              mountPath: /usr/src/app/files
+          ports:
+          - containerPort: 8080
+          env:
+          - name: PORT
+            value: "\x38\x30\x38\x30"
+  
